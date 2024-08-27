@@ -25,13 +25,28 @@ const Feedback = (props) => {
   )
 }
 const Statistics = ({good, neutral, bad}) => {
+  const sum = good + neutral + bad;
+  const average = (good -  bad) / (sum);
 
+  
   return (
     <>
     <h1>Statistics</h1>
     <p>good {good} </p>
     <p>neutral {neutral} </p>
     <p>bad {bad} </p>
+    {
+      (sum === 0) ? 
+      <></> 
+      :
+      <>
+        <p>All {sum} </p>
+        <p>average {average} </p>
+        <p>percentage {(good / sum) * 100}% </p> 
+      </>
+      
+    }
+    
     </>
   )
 }
