@@ -38,13 +38,17 @@ const Statistics = ({good, neutral, bad}) => {
       <p>No Feedback Given</p>
       :
       <>
-        <StatisticLine text={"good"} value={good} />
-        <StatisticLine text={"neutral"} value={neutral} />
-        <StatisticLine text={"bad"} value={bad} />
-        <StatisticLine text={"bad"} value={bad} />
-        <StatisticLine text={"all"} value={sum} />
-        <StatisticLine text={"average"} value={average} />
-        <StatisticLine text={"percentage"} value={(good / sum) * 100} />
+        <table>
+          <tbody>
+          <StatisticLine text={"good"} value={good} />
+          <StatisticLine text={"neutral"} value={neutral} />
+          <StatisticLine text={"bad"} value={bad} />
+          <StatisticLine text={"bad"} value={bad} />
+          <StatisticLine text={"all"} value={sum} />
+          <StatisticLine text={"average"} value={average} />
+          <StatisticLine text={"percentage"} value={(good / sum) * 100} />
+          </tbody>
+        </table>
       </>
       
     }
@@ -52,7 +56,7 @@ const Statistics = ({good, neutral, bad}) => {
     </>
   )
 }
-const StatisticLine = ({text, value}) => <p>{text} {value} </p>
+const StatisticLine = ({text, value}) => <><tr><td>{text}</td> <td>{value} </td></tr></>
 const Button = ({name, onClick}) => <button onClick={onClick}>{name} </button>
 
 export default App
