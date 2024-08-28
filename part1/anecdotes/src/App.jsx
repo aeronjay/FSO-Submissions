@@ -13,14 +13,56 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0);
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
   const getRandAnecdote = () => Math.floor(Math.random() * anecdotes.length);
+  const getNextAnecdote = () => setSelected(getRandAnecdote());
+  const voteCurrentAnecdote = () => {
+    const newPoints = [...points];
+    newPoints[selected] += 1;
+    setPoints(newPoints);
+
+  }
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
-      <button onClick={() => setSelected(getRandAnecdote())}>Next Anecdote</button>
+      <p>Has {points[selected]} votes </p>
+      <button onClick={voteCurrentAnecdote}>vote</button>
+      <button onClick={getNextAnecdote}>Next Anecdote</button>
+      {
+        (Math.max(...points) > 0) ? 
+        <MostVotes anecdotes={anecdotes} points={points} />:
+        <><p>Vote to see which has most votes</p></>
+      }
+      
+      
+
     </div>
   )
 }
+const MostVotes = (props) => {
+  const anecdotes = props.anecdotes;
+  const points = [...props.points];
+  
 
+
+  return (
+    <>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[
+        points.reduce((maxIndex, element, i, arr) => {
+           if((points[i] > points[maxIndex])){
+            return i
+           }else{
+            return maxIndex
+           }
+          
+        }, 0) 
+      ]}</p>
+      <p>Has {Math.max(...points)} votes </p>
+
+    </>
+  )
+}
 export default App
