@@ -7,14 +7,26 @@ const App = () => {
   const [newName, setNewName] = useState('')
   
   const handleAddNewPerson = (e) => {
-    e.preventDefault();
-    console.log(e.target);
-
-    const newPerson = {
-      name: newName
+    e.preventDefault();    
+    if(!personExists(newName)){
+      const newPerson = {
+        name: newName
+      }
+      setPersons(persons.concat(newPerson));
+      setNewName('');
+    }else{
+      alert(`${newName} already exists!`);
     }
-    setPersons(persons.concat(newPerson));
-    setNewName('');
+
+    
+  }
+  const personExists = (personName) => {
+    return persons.reduce((exists, person) => {
+      if(person.name.toLowerCase() === personName.toLowerCase()){
+        return true;
+      }
+    }, false)
+    
   }
 
   return (
