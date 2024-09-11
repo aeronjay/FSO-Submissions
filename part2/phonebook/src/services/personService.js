@@ -9,6 +9,10 @@ const addPerson = (newPerson) => {
     const promise = axios.post(baseUrl, newPerson)
     return promise.then((response) => response.data)
 }
+const deletePerson = (id) => {
+    const promise = axios.delete(`${baseUrl}/${id}`)
+    return promise.then(response => response.data)
+}
 
 
-export default { getAll, addPerson }
+export default { getAll, addPerson, deletePerson }

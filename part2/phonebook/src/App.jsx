@@ -41,6 +41,17 @@ const App = () => {
     }
 
   }
+  const handleDelete = (id, name) => {
+    if(confirm(`Delete ${name} ?`)){
+      personService
+        .deletePerson(id)
+        .then((response) => {
+          setPersons(persons.filter(person => person.id !== response.id))
+        })
+        console.log(`deleted person ${name} with id ${id}`)
+    }
+  }
+
   const personExists = (personName) => {
     return persons.reduce((exists, person) => {
       if(person.name.toLowerCase() === personName.toLowerCase()){
@@ -59,7 +70,7 @@ const App = () => {
         newNumber={newNumber} setNewNumber={setNewNumber} 
       />
 
-      <Persons persons={persons} search={search} />
+      <Persons persons={persons} search={search} handleDelete={handleDelete}/>
     </div>
   )
 }
