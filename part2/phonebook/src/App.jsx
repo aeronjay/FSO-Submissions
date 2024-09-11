@@ -37,7 +37,20 @@ const App = () => {
 
       
     }else{
-      alert(`${newName} already exists!`);
+      if(confirm(`${newName} is already added to phonebook, replace old number with a new one?`)){
+        const existingPerson = persons.find((person) => person.name.toLowerCase() === newName.toLocaleLowerCase())
+        const changedNumber = {...existingPerson, number: newNumber}
+
+        personService
+          .updatePerson(existingPerson.id, changedNumber)
+          .then((response) => {
+            alert(`Successfully Replaced ${response.name} Number with ${response.number}`)
+            setPersons(persons.map((person) => person.id !== response.id ? person  : response))
+            setNewName('');
+            setNewNumber('');
+          })
+
+      }
     }
 
   }
@@ -53,12 +66,12 @@ const App = () => {
   }
 
   const personExists = (personName) => {
-    return persons.reduce((exists, person) => {
-      if(person.name.toLowerCase() === personName.toLowerCase()){
-        return true;
-      }
-    }, false)
+    return persons.some((person) => {
+      return person.name.toLowerCase() === personName.toLowerCase()
+    })
   }
+  
+  
 
   return (
     <div>

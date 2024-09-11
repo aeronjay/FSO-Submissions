@@ -13,6 +13,9 @@ const deletePerson = (id) => {
     const promise = axios.delete(`${baseUrl}/${id}`)
     return promise.then(response => response.data)
 }
+const updatePerson = (id, newPerson) => {
+    const request = axios.put(`${baseUrl}/${id}`, newPerson)
+    return request.then(response => response.data)
+}
 
-
-export default { getAll, addPerson, deletePerson }
+export default { getAll, addPerson, deletePerson, updatePerson }
