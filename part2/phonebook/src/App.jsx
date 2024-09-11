@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Persons from './components/Persons.jsx'
-import axios from 'axios'
+import personService from './services/personService.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,23 +11,31 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
 
   const hook = () => {
-    axios.get("http://localhost:3001/persons")
-    .then((response) => {
-      setPersons(response.data)
-    })
+    personService
+      .getAll()
+      .then((data) => setPersons(data))
+      .catch((err) => console.log(err))
   }
   useEffect(hook, []);
   
   const handleAddNewPerson = (e) => {
-    e.preventDefault();    
+    e.preventDefault();
     if(!personExists(newName)){
       const newPerson = {
         name: newName,
-        number: newNumber
+        number: newNumber,
+        id: String(persons.length + 1)
       }
-      setPersons(persons.concat(newPerson));
-      setNewName('');
-      setNewNumber('');
+      personService
+        .addPerson(newPerson)
+        .then((returnedData) => {
+          setPersons(persons.concat(returnedData));
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((err) => console.log(err))
+
+      
     }else{
       alert(`${newName} already exists!`);
     }
