@@ -39,16 +39,6 @@
       "id": "8",
       "content": "ok it works now",
       "important": true
-    },
-    {
-      "id": "9",
-      "content": "123",
-      "important": true
-    },
-    {
-      "id": "10",
-      "content": "5123",
-      "important": false
     }
   ]
 }
