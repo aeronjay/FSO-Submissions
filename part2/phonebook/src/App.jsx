@@ -3,12 +3,16 @@ import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Persons from './components/Persons.jsx'
 import personService from './services/personService.js'
+import Notification from './components/Notification.jsx'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [search, setSearch] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [notificationStyle, setStyle] = useState('')
 
   const hook = () => {
     personService
@@ -32,6 +36,17 @@ const App = () => {
           setPersons(persons.concat(returnedData));
           setNewName('');
           setNewNumber('');
+          const Notifstyle = {
+            borderStyle : 'solid',
+            borderColor: 'green',
+            borderWidth: '5',
+            color: 'green'
+          }
+          setStyle(Notifstyle)
+          setNotification(`Added ${returnedData.name}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000);
         })
         .catch((err) => console.log(err))
 
@@ -71,11 +86,12 @@ const App = () => {
     })
   }
   
-  
 
   return (
     <div>
+      <Notification message={notification} style={notificationStyle}/>
       <Filter search={search} setSearch={setSearch}/>
+      
       
       <PersonForm 
         handleAddNewPerson={handleAddNewPerson} 
