@@ -59,10 +59,35 @@ const App = () => {
         personService
           .updatePerson(existingPerson.id, changedNumber)
           .then((response) => {
-            alert(`Successfully Replaced ${response.name} Number with ${response.number}`)
             setPersons(persons.map((person) => person.id !== response.id ? person  : response))
             setNewName('');
             setNewNumber('');
+
+            const Notifstyle = {
+              borderStyle : 'solid',
+              borderColor: 'blue',
+              borderWidth: '5',
+              color: 'blue'
+            }
+            setStyle(Notifstyle)
+            setNotification(`Successfully Edited ${response.name}'s number`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 8000);
+          })
+          .catch((err) => {
+            const Notifstyle = {
+              borderStyle : 'solid',
+              borderColor: 'red',
+              borderWidth: '5',
+              color: 'red'
+            }
+            setStyle(Notifstyle)
+            setNotification(`Information about ${existingPerson.name} has already been removed from the server`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 8000);
+            setPersons(persons.filter((person) => person.id !== existingPerson.id))
           })
 
       }
@@ -75,8 +100,21 @@ const App = () => {
         .deletePerson(id)
         .then((response) => {
           setPersons(persons.filter(person => person.id !== response.id))
+          console.log(`deleted person ${name} with id ${id}`)
+          const Notifstyle = {
+            borderStyle : 'solid',
+            borderColor: 'red',
+            borderWidth: '5',
+            color: 'red'
+          }
+          setStyle(Notifstyle)
+          setNotification(`Successfully Deleted ${response.name} with ID: ${response.id}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 8000);
+
         })
-        console.log(`deleted person ${name} with id ${id}`)
+        
     }
   }
 
