@@ -12,12 +12,8 @@ function App() {
       .getAll()
       .then(response => {
         setCountries(response)
-        console.log(response)
       })
-  }, []);
-
-  
-  
+  }, []);  
 
   return (
     <div>
