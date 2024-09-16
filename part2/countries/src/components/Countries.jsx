@@ -1,18 +1,16 @@
 import {  useState  } from 'react'
 
 const Countries = ({  countries,search  }) => {
-    const filtered = search === '' ? [] : countries.filter((country) => country.name.common.toLowerCase().includes(search.toLowerCase()))
+    const filtered = search === '' 
+    ? [] 
+    : countries.filter((country) => country.name.common.toLowerCase().includes(search.toLowerCase()))
     
     if(search === '') {
-        return(
-            <div>This App is Used to Search For Countries</div>
-        )
+        return <div>This App is Used to Search For Countries</div>
     }
 
     if(filtered.length === 1) {
-        return(
-            <Country country={filtered[0]} key={filtered[0].name.common} showing={true}/>
-        )
+        return <Country country={filtered[0]} key={filtered[0].name.common} showing={true}/>
     }
     
     return(
@@ -20,9 +18,7 @@ const Countries = ({  countries,search  }) => {
             {
              filtered.length <= 10 ? 
              filtered.map((count) => {
-                return(
-                    <Country country={count} key={count.name.common} showing={false}/>
-                )
+                return <Country country={count} key={count.name.common} showing={false}/>
              })
              :
              <div>Too Many Match, Please Make it More Specific</div>
