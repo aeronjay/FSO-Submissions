@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const Note = require('./models/note')
 
 const app = express()
 
@@ -7,41 +8,21 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 
-let notes = [
-    {
-      id: "1",
-      content: "HTML is easy",
-      important: true
-    },
-    {
-      id: "2",
-      content: "Browser can execute only JavaScript",
-      important: false
-    },
-    {
-      id: "3",
-      content: "GET and POST are the most important methods of HTTP protocol",
-      important: true
-    }
-  ]
-  
-
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  Note.find({}).then(notes => {
+    console.log(notes)
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (req, res) => {
-  console.log(req.params)
-  const note = notes.find((note) => note.id === req.params.id)
-  if (note) {
+  Note.findById(req.params.id).then(note => {
     res.json(note)
-  } else {
-    res.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/notes/:id', (req, res) => {
@@ -51,11 +32,21 @@ app.delete('/api/notes/:id', (req, res) => {
   res.status(204).end()
 })
 
-app.post('/api/notes', (req,res) => {
-  const note = req.body
-  console.log(note)
-  notes = notes.concat(note)
-  res.json(note)
+app.post('/api/notes', (request, response) => {
+  const body = request.body
+
+  if (body.content === undefined) {
+    return response.status(400).json({ error: 'content missing' })
+  }
+
+  const note = new Note({
+    content: body.content,
+    important: body.important || false,
+  })
+
+  note.save().then(savedNote => {
+    response.json(savedNote)
+  })
 })
 
 const PORT = process.env.PORT || 3001
