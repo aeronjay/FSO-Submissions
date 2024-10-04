@@ -9,27 +9,32 @@ app.use(express.json())
 app.use(express.static('dist'))
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
+  response.send('<h1>Hello!</h1>')
 })
 
 app.get('/api/notes', (request, response) => {
   Note.find({}).then(notes => {
-    console.log(notes)
     response.json(notes)
   })
 })
 
-app.get('/api/notes/:id', (req, res) => {
-  Note.findById(req.params.id).then(note => {
-    res.json(note)
-  })
+app.get('/api/notes/:id', (request, response, next) => {
+  Note.findById(request.params.id)
+    .then(note => {
+      if (note) {
+        response.json(note)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res, next) => {
   const id = req.params.id
-  notes = notes.filter((note) => note.id !== id)
-
-  res.status(204).end()
+  Note.findByIdAndDelete(id).then(result => {
+    response.status(404).end
+  }).catch(err => next(err))
 })
 
 app.post('/api/notes', (request, response) => {
@@ -48,6 +53,25 @@ app.post('/api/notes', (request, response) => {
     response.json(savedNote)
   })
 })
+
+
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
