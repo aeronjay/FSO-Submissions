@@ -15,22 +15,22 @@ mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
 const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
+  content: String,
+  important: Boolean,
 })
 
 const Note = mongoose.model('Note', noteSchema)
 
-const note = new Note({
-    content: 'New Content Sample',
-    important: false,
-})
+// const note = new Note({
+//     content: 'New Content Sample',
+//     important: false,
+// })
 
 // note.save().then(result => {
 //     console.log(`Note saved: ${result}`)
 //     mongoose.connection.close()
 // })
 Note.find({}).then(result => {
-    console.log(result)
-    mongoose.connection.close()
+  console.log(result)
+  mongoose.connection.close()
 })
