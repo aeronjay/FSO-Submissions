@@ -51,21 +51,17 @@ const blogs = [
         __v: 0
     }
 ]
-const oneBlog = [
-    blogs[0]
-]
-describe('total Likes Function', () => {
-    
-    test('of empty list is zeo', () => {
-        const result = list_helper.totalLikes([])
-        assert.strictEqual(result, 0)
+const oneBlog = [blogs[0]]
+describe('define Blog', () => {
+    test('has one blog return that blog', () => {
+        const result = list_helper.favoriteBlog(oneBlog)
+
+        assert.deepStrictEqual(result, oneBlog[0])
+
     })
-    test('when list has one blog equals the likes of that', () => {
-        const result = list_helper.totalLikes(oneBlog)
-        assert.strictEqual(result, 7)
-    })
-    test('when list has many blogs equals to sum of all likes', () => {
-        const result = list_helper.totalLikes(blogs)
-        assert.strictEqual(result, 36)
+    test('has many blog', () => {
+        const result = list_helper.favoriteBlog(blogs)
+        console.log(result)
+        assert.deepStrictEqual(result, blogs[2])
     })
 })
