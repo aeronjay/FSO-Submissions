@@ -14,8 +14,10 @@ const favoriteBlog = (blogs) => {
     })
 }
 const mostBlogs = (blogs) => {
-    
-} 
+    return blogs.reduce((hasMostBlog, blog) => {
+        return blog.blogs > hasMostBlog.blogs ? blog : hasMostBlog
+    })
+}
 
 
-module.exports = {  dummy, totalLikes, favoriteBlog  }
+module.exports = {  dummy, totalLikes, favoriteBlog, mostBlogs  }
