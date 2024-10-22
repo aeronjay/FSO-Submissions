@@ -25,7 +25,19 @@ const mostBlogs = (blogs) => {
         newAuthorBlogsList.push(newAuthorBlogs)
     }
     return maxBy(newAuthorBlogsList, (obj) => obj.blogs);
-}   
+}
+const mostLikes = (blogs) => {
+    const authorBlogs = groupBy(blogs, 'author')
+    const newAuthorBlogsList = []
+    for(const obj in authorBlogs){
+        const newAuthorBlogs = {}
+        newAuthorBlogs.author = obj
+        newAuthorBlogs.likes = authorBlogs[obj].reduce((total, currentObj) => total += currentObj.likes , 0);
+        newAuthorBlogsList.push(newAuthorBlogs)
+    }
+    console.log("asdasdasd", maxBy(newAuthorBlogsList, (obj) => obj.likes))
+    return maxBy(newAuthorBlogsList, (obj) => obj.likes);
+}
 
 
-module.exports = {  dummy, totalLikes, favoriteBlog, mostBlogs  }
+module.exports = {  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes  }
