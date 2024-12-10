@@ -42,6 +42,18 @@ test('notes are returned in JSON format', async () => {
         .expect('Content-Type', /application\/json/)
 })
 
+test('verifies that the unique identifier property of the blog posts is named id', async () => {
+    const response = await api.get('/api/blogs');
+
+    assert(Array.isArray(response.body), 'Response body should be an array');
+    
+    response.body.forEach(blog => {
+      assert(blog.id, 'Blog post should have an id');
+      assert.strictEqual(blog._id, undefined, 'Blog post should not have _id');
+    });
+
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
