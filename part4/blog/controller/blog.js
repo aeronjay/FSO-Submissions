@@ -12,13 +12,14 @@ mongoose.connect(config.MONGO_URI)
 
 notesRouter.use(cors())
 
-notesRouter.get('/api/blogs', (request, response, next) => {
-    Blog
-        .find({})
-        .then(blogs => {
-            response.json(blogs)
-        })
-        .catch((error) => next(error))
+notesRouter.get('/api/blogs', async (request, response, next) => {
+    
+    try{
+        let blogs = await Blog.find({})
+        response.json(blogs)
+    }catch(ex){
+        next(ex)
+    }
 })
 
 notesRouter.post('/api/blogs', (request, response, next) => {
