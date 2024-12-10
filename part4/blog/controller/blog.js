@@ -22,15 +22,15 @@ notesRouter.get('/api/blogs', async (request, response, next) => {
     }
 })
 
-notesRouter.post('/api/blogs', (request, response, next) => {
+notesRouter.post('/api/blogs', async (request, response, next) => {
     const blog = new Blog(request.body)
 
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
-        .catch(error => next(error))
+    try{
+        const result = await blog.save()
+        response.status(201).json(result)
+    }catch(ex){
+        next(ex)
+    }
 })
 
 
