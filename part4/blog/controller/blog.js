@@ -25,6 +25,10 @@ notesRouter.get('/api/blogs', async (request, response, next) => {
 notesRouter.post('/api/blogs', async (request, response, next) => {
     const blog = new Blog(request.body)
     
+    if(!blog.title || !blog.url){
+        return response.status(400).json({error: "title and url required"})
+    }
+
     if(!blog.likes){
         blog.likes = 0
     }

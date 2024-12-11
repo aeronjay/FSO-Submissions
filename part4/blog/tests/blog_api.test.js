@@ -93,7 +93,23 @@ test('no likes default to 0', async () => {
             }
         })
 })
+test('POST /api/blogs fails with status 400 if title or url is missing', async () => {
+    const newBlog = {
+        author: 'Test Author',
+        likes: 5,
+    };
 
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+        .expect(res => {
+            if(res.body.error !== "title and url required"){
+                throw new Error(`title and url required`)
+            }
+        });
+});
 after(async () => {
     await mongoose.connection.close()
 })
