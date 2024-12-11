@@ -20,14 +20,18 @@ const blogs = [
         likes: 1231,
         url: "spotify chuchu"
     }
+    
 ]
 
 beforeEach(async () => {
     await Blog.deleteMany({})
     let newBlog = new Blog(blogs[0])
     await newBlog.save(newBlog)
+
     newBlog = new Blog(blogs[1])
     await newBlog.save(newBlog)
+
+    
 })
 
 test('returns correct amount of blog post', async () => {
@@ -58,7 +62,7 @@ test('post method create a new blog in db', async () => {
     const NewBlog =     {
         title: "new Blog Title",
         author: "new Author Title",
-        likes: 32131,
+        likes: 1231,
         url: "NEW blog url"
     }
     await api.post('/api/blogs')
@@ -66,11 +70,28 @@ test('post method create a new blog in db', async () => {
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
+    
     const response = await api.get('/api/blogs')
     const contents = response.body.map(res => res.title)
     assert.strictEqual(response.body.length, blogs.length + 1)
     assert(contents.includes("new Blog Title"))
 
+})
+
+test('no likes default to 0', async () => {
+    let newBlog = {
+        title: "the art of not giving a fuck",
+        author: "mark manson",
+        url: "spotify chuchu"
+    }
+    
+    await api.post('/api/blogs')
+        .send(newBlog)
+        .expect(res => {
+            if(res.body.likes !== 0){
+                throw new Error(`LIKES NOT 0 as defualt`)
+            }
+        })
 })
 
 after(async () => {
